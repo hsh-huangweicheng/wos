@@ -131,6 +131,15 @@ interface C1Line {
 
 - 页面内提供 CSV 导出按钮
 
+### 导入导出功能
+
+| 功能 | 格式 | 说明 |
+|------|------|------|
+| 机构导入/导出 | JSON | 完整备份，含 name + pattern |
+| 员工导入 | CSV | 批量导入（name, department） |
+| 员工导出 | CSV | 备份当前员工列表 |
+| 匹配规则导出 | JSON | 导出 MatchRule + UtDepartment |
+
 ### 匹配逻辑说明
 
 **输入**：
@@ -184,7 +193,7 @@ interface C1Line {
 | 路由 | React Router |
 | 拼音转换 | pinyin-pro |
 | 组件库 | Ant Design 5 |
-| 数据存储 | localStorage |
+| 数据存储 | IndexedDB（dexie.js） | localStorage |
 | 部署 | Vercel |
 
 ---
@@ -200,5 +209,5 @@ interface C1Line {
 | R5 | 部门分析 | 列表展示 + Checkbox筛选 + 导出 |
 | R6 | 匹配功能 | 支持匹配/选择/修改 |
 | R7 | 重名处理 | UT与部门关系，作者变化时清空 |
-| R8 | 数据持久化 | localStorage，重启不丢失 |
+| R8 | 数据持久化 | IndexedDB，重启不丢失 |
 | R9 | Vercel 部署 | 访问域名可正常使用 |
