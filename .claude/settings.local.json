@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -i 's/\\\\xef\\\\x80\\\\x82//g' Home.tsx)",
+      "Bash(sed -i 's/[[:space:]]*\\)$/\\)/' Home.tsx)",
+      "Bash(npx tsc *)",
+      "Bash(set ECC_GATEGUARD=off)"
+    ]
+  }
+}
