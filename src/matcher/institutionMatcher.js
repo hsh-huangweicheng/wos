@@ -1,10 +1,11 @@
-function parseC1Field(c1Content) {
+﻿function parseC1Field(c1Content) {
   const lines = c1Content.split(/\n/);
   const results = [];
 
   for (const line of lines) {
-    const match = line.match(/^\[(.+?)\]\s*(.+)$/);
-    if (match) {
+    const regex = /\[([^\]]+)\]\s*([^\[]+)/g;
+    let match;
+    while ((match = regex.exec(line)) !== null) {
       const authorsStr = match[1];
       const institution = match[2].trim();
       const authors = authorsStr.split(";").map(a => a.trim()).filter(a => a);

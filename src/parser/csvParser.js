@@ -1,76 +1,89 @@
-const fs = require("fs");
-const path = require("path");
+﻿const fs = require("fs");
 
-function parseWosFile(content) {
+function parseCSV(content) {
+  const lines = content.split(/\r?\n/).filter(line => line.trim());
+  if (lines.length < 2) return [];
+
+  const headers = lines[0].split(",").map(h => h.trim());
   const records = [];
-  const recordBlocks = content.split(/\nER\n/);
 
-  for (const block of recordBlocks) {
-    if (!block.trim()) continue;
-    const record = parseRecordBlock(block);
-    if (record) {
-      records.push(record);
-    }
+  for (let i = 1; i < lines.length; i++) {
+    const values = parseCSVLine(lines[i]);
+    const record = {};
+    headers.forEach((header, index) => {
+      record[header] = values[index] || "";
+    });
+    records.push(record);
   }
+
   return records;
 }
 
-function parseRecordBlock(block) {
-  const lines = block.split("\n");
-  let ut = "";
-  const authors = [];
-  const affiliations = [];
+function parseCSVLine(line) {
+  const values = [];
+  let current = "";
+  let inQuotes = false;
 
-  let currentField = "";
-  let currentValue = "";
-
-  for (const line of lines) {
-    const fieldMatch = line.match(/^([A-Z0-9]+)\s+(.*)$/);
-    if (fieldMatch) {
-      if (currentField) {
-        processFieldValue(currentField, currentValue.trim(), authors, affiliations, (v) => { ut = v; });
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === "\"") {
+      if (inQuotes && line[i + 1] === "\"") {
+        current += "\"";
+        i++;
+      } else {
+        inQuotes = !inQuotes;
       }
-      currentField = fieldMatch[1];
-      currentValue = fieldMatch[2];
-    } else if (line.startsWith("   ")) {
-      currentValue += " " + line.trim();
+    } else if (char === "," && !inQuotes) {
+      values.push(current.trim());
+      current = "";
+    } else {
+      current += char;
     }
   }
-
-  if (currentField) {
-    processFieldValue(currentField, currentValue.trim(), authors, affiliations, (v) => { ut = v; });
-  }
-
-  if (!ut) return null;
-  return { ut, authors, affiliations };
+  values.push(current.trim());
+  return values;
 }
 
-function processFieldValue(field, value, authors, affiliations, setUt) {
-  switch (field) {
-    case "UT":
-      setUt(value.replace("WOS:", ""));
-      break;
-    case "AF":
-      if (value) authors.push(value);
-      break;
-    case "C1":
-      if (value) affiliations.push(value);
-      break;
-  }
+function loadEmployeeConfig(filePath) {
+  const content = fs.readFileSync(filePath, "utf-8");
+  const records = parseCSV(content);
+
+  return records.map(record => {
+    const keys = Object.keys(record);
+    const nameKey = keys.find(k => k.includes("姓") || k.includes("name"));
+    const deptKey = keys.find(k => k.includes("部门") || k.includes("department") || k.includes("部门"));
+    const pinyinKey = keys.find(k => k.includes("拼音") || k.includes("pinyin"));
+
+    return {
+      chineseName: record[nameKey] || "",
+      department: record[deptKey] || "",
+      pinyin: record[pinyinKey] || ""
+    };
+  }).filter(emp => emp.chineseName && emp.pinyin);
 }
 
-async function parseWosDirectory(dirPath) {
-  const files = fs.readdirSync(dirPath);
-  const wosFiles = files.filter(f => f.endsWith(".txt") || f.endsWith(".rec"));
+function loadInstitutionConfig(filePath) {
+  const content = fs.readFileSync(filePath, "utf-8");
+  const records = parseCSV(content);
 
-  const allRecords = [];
-  for (const file of wosFiles) {
-    const filePath = path.join(dirPath, file);
-    const content = fs.readFileSync(filePath, "utf-8");
-    const records = parseWosFile(content);
-    allRecords.push(...records);
-  }
-  return allRecords;
+  return records.map(record => {
+    const keys = Object.keys(record);
+    const patternKey = keys.find(k => k.includes("英文") || k.includes("pattern") || k.includes("mode"));
+
+    const pattern = record[patternKey] || "";
+    let regex;
+    try {
+      regex = new RegExp(pattern, "i");
+    } catch (e) {
+      regex = new RegExp(pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
+    }
+
+    return {
+      pattern: pattern,
+      regex: regex,
+      raw: record
+    };
+  }).filter(cfg => cfg.pattern);
 }
 
-module.exports = { parseWosFile, parseWosDirectory };
+module.exports = { loadEmployeeConfig, loadInstitutionConfig };

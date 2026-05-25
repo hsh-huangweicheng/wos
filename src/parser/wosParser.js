@@ -1,4 +1,4 @@
-const fs = require("fs");
+﻿const fs = require("fs");
 const path = require("path");
 
 function parseWosFile(content) {
@@ -33,7 +33,7 @@ function parseRecordBlock(block) {
       currentField = fieldMatch[1];
       currentValue = fieldMatch[2];
     } else if (line.startsWith("   ")) {
-      currentValue += " " + line.trim();
+      currentValue += " ||| " + line.trim();
     }
   }
 
@@ -51,7 +51,7 @@ function processFieldValue(field, value, authors, affiliations, setUt) {
       setUt(value.replace("WOS:", ""));
       break;
     case "AF":
-      if (value) authors.push(value);
+      if (value) { const authorList = value.split(" ||| "); authors.push(...authorList); }
       break;
     case "C1":
       if (value) affiliations.push(value);
