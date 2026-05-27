@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WOS记录解析工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9ff;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f0f2ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: #e8ebff;
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .upload-hint {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .file-list {
+            margin-top: 20px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .file-name {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .file-remove {
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .btn-success:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .preview-container {
+            margin-top: 20px;
+            max-height: 400px;
+            overflow: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .preview-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .preview-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+
+        .preview-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .preview-table tr:hover {
+            background: #f8f9ff;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .alert-info {
+            background: #e7f3ff;
+            color: #0056b3;
+            border: 1px solid #b3d7ff;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>WOS记录解析工具</h1>
+
+        <div class="card">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">点击或拖拽上传WOS导出的TXT文件</div>
+                <div class="upload-hint">支持同时上传多个文件</div>
+                <input type="file" id="fileInput" multiple accept=".txt">
+            </div>
+
+            <div class="file-list" id="fileList"></div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" id="parseBtn" disabled>解析文件</button>
+                <button class="btn btn-primary" id="clearBtn" disabled>清空文件</button>
+            </div>
+        </div>
+
+        <div class="card hidden" id="resultCard">
+            <h2 style="margin-bottom: 15px; color: #333;">解析结果</h2>
+
+            <div class="stats" id="stats"></div>
+
+            <div class="alert alert-info" id="dedupInfo"></div>
+
+            <div class="btn-group">
+                <button class="btn btn-success" id="downloadBtn">下载CSV文件</button>
+            </div>
+
+            <div class="preview-container" id="previewContainer">
+                <table class="preview-table" id="previewTable">
+                    <thead>
+                        <tr>
+                            <th>UT</th>
+                            <th>作者</th>
+                            <th>机构</th>
+                            <th>第几作者</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>正在解析文件...</div>
+        </div>
+    </div>
+
+    <script>
+        // 文件存储
+        let uploadedFiles = [];
+        let parsedData = [];
+
+        // DOM元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
+        const parseBtn = document.getElementById('parseBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const resultCard = document.getElementById('resultCard');
+        const stats = document.getElementById('stats');
+        const dedupInfo = document.getElementById('dedupInfo');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const previewBody = document.getElementById('previewBody');
+        const loading = document.getElementById('loading');
+
+        // 上传区域点击
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        // 文件选择
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+            fileInput.value = '';
+        });
+
+        // 拖拽事件
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        // 处理文件
+        function handleFiles(files) {
+            const txtFiles = Array.from(files).filter(f => f.name.endsWith('.txt'));
+
+            if (txtFiles.length === 0) {
+                alert('请上传TXT格式的文件');
+                return;
+            }
+
+            uploadedFiles = [...uploadedFiles, ...txtFiles];
+            updateFileList();
+            updateButtons();
+        }
+
+        // 更新文件列表
+        function updateFileList() {
+            fileList.innerHTML = uploadedFiles.map((file, index) => `
+                <div class="file-item">
+                    <span class="file-name">📄 ${file.name}</span>
+                    <span class="file-remove" onclick="removeFile(${index})">✕</span>
+                </div>
+            `).join('');
+        }
+
+        // 移除文件
+        function removeFile(index) {
+            uploadedFiles.splice(index, 1);
+            updateFileList();
+            updateButtons();
+        }
+
+        // 更新按钮状态
+        function updateButtons() {
+            parseBtn.disabled = uploadedFiles.length === 0;
+            clearBtn.disabled = uploadedFiles.length === 0;
+        }
+
+        // 清空文件
+        clearBtn.addEventListener('click', () => {
+            uploadedFiles = [];
+            updateFileList();
+            updateButtons();
+            resultCard.classList.add('hidden');
+        });
+
+        // 解析文件
+        parseBtn.addEventListener('click', async () => {
+            loading.style.display = 'block';
+            resultCard.classList.add('hidden');
+
+            try {
+                const allResults = [];
+
+                for (const file of uploadedFiles) {
+                    const text = await readFileAsText(file);
+                    const records = parseWOSText(text);
+                    allResults.push(...records);
+                }
+
+                // 去重
+                const beforeDedup = allResults.length;
+                parsedData = deduplicateData(allResults);
+                const afterDedup = parsedData.length;
+
+                displayResults(beforeDedup, afterDedup);
+            } catch (error) {
+                alert('解析错误: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        });
+
+        // 读取文件为文本
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = reject;
+                reader.readAsText(file, 'UTF-8');
+            });
+        }
+
+        // 解析WOS TXT文本
+        function parseWOSText(text) {
+            const results = [];
+            const lines = text.split('\n');
+
+            let currentRecord = null;
+            let currentField = null;
+            let fieldContent = [];
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const trimmedLine = line.trim();
+
+                // 空行或记录结束
+                if (trimmedLine === '' || trimmedLine === 'ER') {
+                    if (currentRecord) {
+                        // 保存最后一个字段
+                        if (currentField && fieldContent.length > 0) {
+                            currentRecord[currentField] = fieldContent.join('\n');
+                        }
+                        // 处理记录
+                        processRecord(currentRecord, results);
+                        currentRecord = null;
+                        currentField = null;
+                        fieldContent = [];
+                    }
+                    continue;
+                }
+
+                // 检查是否是新字段开头 (以两个字母开头后跟空格)
+                const fieldMatch = line.match(/^([A-Z0-9]{2})\s+(.*)$/);
+
+                if (fieldMatch) {
+                    // 保存前一个字段
+                    if (currentField && fieldContent.length > 0) {
+                        currentRecord[currentField] = fieldContent.join('\n');
+                    }
+
+                    const fieldName = fieldMatch[1];
+                    const fieldValue = fieldMatch[2];
+
+                    if (!currentRecord) {
+                        currentRecord = {};
+                    }
+
+                    currentField = fieldName;
+                    fieldContent = [fieldValue];
+                } else if (line.startsWith('   ') && currentField) {
+                    // 续行 (以三个空格开头)
+                    fieldContent.push(trimmedLine);
+                }
+            }
+
+            // 处理最后一条记录
+            if (currentRecord) {
+                if (currentField && fieldContent.length > 0) {
+                    currentRecord[currentField] = fieldContent.join('\n');
+                }
+                processRecord(currentRecord, results);
+            }
+
+            return results;
+        }
+
+        // 处理单条记录
+        function processRecord(record, results) {
+            const ut = record['UT'];
+            // 从AF字段获取作者全名列表（决定作者顺序）
+            const afList = (record['AF'] || '').split('\n').map(a => a.trim()).filter(a => a);
+            const c1Raw = record['C1'] || '';
+
+            if (!ut || afList.length === 0) return;
+
+            // 解析C1字段获取作者-机构对应关系
+            const authorInstitutions = parseC1Field(c1Raw);
+
+            // 为每个作者生成一行记录
+            afList.forEach((author, index) => {
+                const authorOrder = index + 1;
+                const institution = findInstitution(author, authorInstitutions);
+
+                results.push({
+                    UT: ut,
+                    作者: author,
+                    机构: institution,
+                    第几作者: authorOrder
+                });
+            });
+        }
+
+        // 解析C1字段
+        function parseC1Field(c1Text) {
+            const authorInstitutions = [];
+            const c1Lines = c1Text.split('\n');
+
+            let currentAuthors = [];
+            let currentInstitution = '';
+
+            for (const line of c1Lines) {
+                // 检查是否是作者列表开头 [...]
+                const authorMatch = line.match(/^\[([^\]]+)\]\s*(.*)$/);
+
+                if (authorMatch) {
+                    // 保存前一组
+                    if (currentAuthors.length > 0 && currentInstitution) {
+                        currentAuthors.forEach(author => {
+                            authorInstitutions.push({
+                                author: normalizeAuthorName(author),
+                                institution: currentInstitution
+                            });
+                        });
+                    }
+
+                    // 解析新的作者列表
+                    const authorListStr = authorMatch[1];
+                    currentAuthors = authorListStr.split(';').map(a => a.trim()).filter(a => a);
+                    currentInstitution = authorMatch[2].trim();
+                } else if (line.trim() && currentInstitution) {
+                    // 机构续行
+                    currentInstitution += ' ' + line.trim();
+                }
+            }
+
+            // 保存最后一组
+            if (currentAuthors.length > 0 && currentInstitution) {
+                currentAuthors.forEach(author => {
+                    authorInstitutions.push({
+                        author: normalizeAuthorName(author),
+                        institution: currentInstitution
+                    });
+                });
+            }
+
+            return authorInstitutions;
+        }
+
+        // 标准化作者姓名格式
+        function normalizeAuthorName(name) {
+            // 移除多余空格，统一格式
+            return name.trim().replace(/\s+/g, ' ');
+        }
+
+        // 为作者查找机构
+        function findInstitution(author, authorInstitutions) {
+            const normalizedAuthor = normalizeAuthorName(author);
+
+            // 1. 尝试精确匹配（全名匹配）
+            for (const item of authorInstitutions) {
+                if (item.author.toLowerCase() === normalizedAuthor.toLowerCase()) {
+                    return item.institution;
+                }
+            }
+
+            // 2. 尝试姓氏+名字首字母匹配
+            // AF格式: "Wang, Xiaoming" -> 姓"Wang", 名"Xiaoming"
+            // C1格式: "Wang, Xiaoming" 或 "Wang, X"
+            const afParts = normalizedAuthor.split(',').map(p => p.trim());
+            const afLastName = afParts[0].toLowerCase();
+            const afFirstName = afParts[1] || '';
+
+            for (const item of authorInstitutions) {
+                const itemParts = item.author.split(',').map(p => p.trim());
+                const itemLastName = (itemParts[0] || '').toLowerCase();
+                const itemFirstName = itemParts[1] || '';
+
+                // 姓氏必须匹配
+                if (itemLastName !== afLastName) continue;
+
+                // 如果C1中是缩写形式（单个字母），检查首字母
+                if (itemFirstName.length === 1) {
+                    if (afFirstName.toLowerCase().startsWith(itemFirstName.toLowerCase())) {
+                        return item.institution;
+                    }
+                }
+                // 如果AF中是缩写形式
+                else if (afFirstName.length === 1) {
+                    if (itemFirstName.toLowerCase().startsWith(afFirstName.toLowerCase())) {
+                        return item.institution;
+                    }
+                }
+                // 都是全名，检查是否匹配
+                else if (itemFirstName.toLowerCase() === afFirstName.toLowerCase()) {
+                    return item.institution;
+                }
+            }
+
+            // 3. 仅姓氏匹配（作为最后手段）
+            for (const item of authorInstitutions) {
+                const itemLastName = item.author.split(',')[0].trim().toLowerCase();
+                if (itemLastName === afLastName) {
+                    return item.institution;
+                }
+            }
+
+            // 4. 如果C1中只有一个机构且没有明确分组，所有作者使用该机构
+            if (authorInstitutions.length === 1) {
+                return authorInstitutions[0].institution;
+            }
+
+            return '';
+        }
+
+        // 数据去重
+        function deduplicateData(data) {
+            const seen = new Set();
+            const result = [];
+
+            for (const item of data) {
+                const key = `${item.UT}|${item.作者}|${item.机构}|${item.第几作者}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    result.push(item);
+                }
+            }
+
+            return result;
+        }
+
+        // 显示结果
+        function displayResults(beforeDedup, afterDedup) {
+            // 统计信息
+            const recordCount = new Set(parsedData.map(d => d.UT)).size;
+            const authorCount = parsedData.length;
+            const dupCount = beforeDedup - afterDedup;
+
+            stats.innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-number">${uploadedFiles.length}</div>
+                    <div class="stat-label">文件数量</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">${recordCount}</div>
+                    <div class="stat-label">记录条数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">${authorCount}</div>
+                    <div class="stat-label">作者总数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">${dupCount}</div>
+                    <div class="stat-label">去重数量</div>
+                </div>
+            `;
+
+            dedupInfo.textContent = `解析完成！原始数据 ${beforeDedup} 条，去重后 ${afterDedup} 条`;
+
+            // 预览表格 (最多显示100条)
+            const previewData = parsedData.slice(0, 100);
+            previewBody.innerHTML = previewData.map(item => `
+                <tr>
+                    <td>${escapeHtml(item.UT)}</td>
+                    <td>${escapeHtml(item.作者)}</td>
+                    <td>${escapeHtml(item.机构)}</td>
+                    <td>${item.第几作者}</td>
+                </tr>
+            `).join('');
+
+            resultCard.classList.remove('hidden');
+        }
+
+        // HTML转义
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 下载CSV
+        downloadBtn.addEventListener('click', () => {
+            if (parsedData.length === 0) return;
+
+            // 构建CSV内容
+            const headers = ['UT', '作者', '机构', '第几作者'];
+            const rows = [headers.join(',')];
+
+            for (const item of parsedData) {
+                const row = [
+                    item.UT,
+                    `"${item.作者.replace(/"/g, '""')}"`,
+                    `"${item.机构.replace(/"/g, '""')}"`,
+                    item.第几作者
+                ];
+                rows.push(row.join(','));
+            }
+
+            const csvContent = '\uFEFF' + rows.join('\n'); // BOM for Excel
+
+            // 生成有意义的文件名
+            const recordCount = new Set(parsedData.map(d => d.UT)).size;
+            const authorCount = parsedData.length;
+            const timestamp = formatDateTime(new Date());
+            const filename = `WOS作者机构_${recordCount}条记录_${authorCount}位作者_${timestamp}.csv`;
+
+            // 创建下载
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        // 格式化日期时间
+        function formatDateTime(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            const h = String(date.getHours()).padStart(2, '0');
+            const min = String(date.getMinutes()).padStart(2, '0');
+            return `${y}${m}${d}_${h}${min}`;
+        }
+    </script>
+</body>
+</html>

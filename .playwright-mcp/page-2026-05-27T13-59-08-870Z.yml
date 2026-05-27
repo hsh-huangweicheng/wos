@@ -1,0 +1,10 @@
+- generic [ref=e2]:
+  - heading "WOS记录解析工具" [level=1] [ref=e3]
+  - generic [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - generic [ref=e6]: 📁
+      - generic [ref=e7]: 点击或拖拽上传WOS导出的TXT文件
+      - generic [ref=e8]: 支持同时上传多个文件
+    - generic [ref=e9]:
+      - button "解析文件" [disabled] [ref=e10]
+      - button "清空文件" [disabled] [ref=e11]

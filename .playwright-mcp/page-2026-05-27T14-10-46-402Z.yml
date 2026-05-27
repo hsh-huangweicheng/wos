@@ -1,0 +1,58 @@
+- generic [ref=e2]:
+  - heading "WOS记录解析工具" [level=1] [ref=e3]
+  - generic [ref=e4]:
+    - generic [ref=e5] [cursor=pointer]:
+      - generic [ref=e6]: 📁
+      - generic [ref=e7]: 点击或拖拽上传WOS导出的TXT文件
+      - generic [ref=e8]: 支持同时上传多个文件
+    - generic [ref=e13]:
+      - generic [ref=e14]: 📄 test-wos.txt
+      - generic [ref=e15] [cursor=pointer]: ✕
+    - generic [ref=e9]:
+      - button "解析文件" [active] [ref=e10] [cursor=pointer]
+      - button "清空文件" [ref=e11] [cursor=pointer]
+  - generic [ref=e16]:
+    - heading "解析结果" [level=2] [ref=e17]
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]: "1"
+        - generic [ref=e21]: 文件数量
+      - generic [ref=e22]:
+        - generic [ref=e23]: "2"
+        - generic [ref=e24]: 记录条数
+      - generic [ref=e25]:
+        - generic [ref=e26]: "4"
+        - generic [ref=e27]: 作者总数
+      - generic [ref=e28]:
+        - generic [ref=e29]: "0"
+        - generic [ref=e30]: 去重数量
+    - generic [ref=e31]: 解析完成！原始数据 4 条，去重后 4 条
+    - button "下载CSV文件" [ref=e33] [cursor=pointer]
+    - table [ref=e35]:
+      - rowgroup [ref=e36]:
+        - row "UT 作者 机构 第几作者" [ref=e37]:
+          - columnheader "UT" [ref=e38]
+          - columnheader "作者" [ref=e39]
+          - columnheader "机构" [ref=e40]
+          - columnheader "第几作者" [ref=e41]
+      - rowgroup [ref=e42]:
+        - row "WOS:001710458900011 Tang, C Jinling Inst Technol, Sch Animat, Nanjing, Jiangsu, Peoples R China. 1" [ref=e43]:
+          - cell "WOS:001710458900011" [ref=e44]
+          - cell "Tang, C" [ref=e45]
+          - cell "Jinling Inst Technol, Sch Animat, Nanjing, Jiangsu, Peoples R China." [ref=e46]
+          - cell "1" [ref=e47]
+        - row "WOS:001710458900011 Li, QP Jinling Inst Technol, Sch Animat, Nanjing, Jiangsu, Peoples R China. 2" [ref=e48]:
+          - cell "WOS:001710458900011" [ref=e49]
+          - cell "Li, QP" [ref=e50]
+          - cell "Jinling Inst Technol, Sch Animat, Nanjing, Jiangsu, Peoples R China." [ref=e51]
+          - cell "2" [ref=e52]
+        - row "WOS:001710458900022 Wang, X Tsinghua Univ, Beijing, Peoples R China. 1" [ref=e53]:
+          - cell "WOS:001710458900022" [ref=e54]
+          - cell "Wang, X" [ref=e55]
+          - cell "Tsinghua Univ, Beijing, Peoples R China." [ref=e56]
+          - cell "1" [ref=e57]
+        - row "WOS:001710458900022 Zhang, Y Tsinghua Univ, Beijing, Peoples R China. 2" [ref=e58]:
+          - cell "WOS:001710458900022" [ref=e59]
+          - cell "Zhang, Y" [ref=e60]
+          - cell "Tsinghua Univ, Beijing, Peoples R China." [ref=e61]
+          - cell "2" [ref=e62]
