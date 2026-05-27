@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:/Workspace/wos/.claude/prds\")",
+      "mcp__plugin_ecc_playwright__browser_navigate",
+      "Bash(rm -f index.html)",
+      "Bash(file index.html)",
+      "WebSearch",
+      "Bash(npm install *)",
+      "Bash(npm list *)",
+      "Bash(cat \"C:/Users/huangweicheng/AppData/Roaming/npm/node_modules/@playwright/mcp/package.json\" | head -30)",
+      "Read(//c/Users/huangweicheng/AppData/Roaming/npm/node_modules/@playwright/mcp/**)",
+      "Bash(timeout 5s playwright-mcp)",
+      "Bash(playwright-mcp --help)",
+      "Bash(python3 -c ' *)"
+    ],
+    "additionalDirectories": [
+      "c:\\Workspace\\wos\\.claude"
+    ]
+  }
+}
