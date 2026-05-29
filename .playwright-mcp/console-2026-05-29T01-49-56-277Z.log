@@ -1,0 +1,2 @@
+[     527ms] [LOG] Config loaded: {institutions: Array(1), authors: Array(889), departments: Array(1732), knownInfo: Array(1)} @ http://localhost:8765/wos-parser-enhanced.html:366
+[     778ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/favicon.ico:0

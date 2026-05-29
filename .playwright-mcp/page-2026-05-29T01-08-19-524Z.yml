@@ -1,0 +1,294 @@
+- generic [ref=e2]:
+  - heading "WOS记录解析工具 - 增强版 帮助" [level=1] [ref=e3]:
+    - text: WOS记录解析工具 - 增强版
+    - button "帮助" [ref=e4] [cursor=pointer]
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e8]: WOS文件上传
+      - generic [ref=e9] [cursor=pointer]:
+        - generic [ref=e10]: 📄
+        - generic [ref=e11]: 点击或拖拽上传WOS导出的TXT文件
+        - generic [ref=e12]: 支持同时上传多个文件
+      - generic [ref=e27]:
+        - generic [ref=e28]: 📄 savedrecs.txt
+        - generic [ref=e29] [cursor=pointer]: ✕
+      - generic [ref=e13]:
+        - button "解析文件" [ref=e14] [cursor=pointer]
+        - button "清空" [ref=e15] [cursor=pointer]
+    - generic [ref=e16]:
+      - generic [ref=e18]: 配置管理
+      - generic [ref=e19] [cursor=pointer]:
+        - generic [ref=e20]: 点击上传自定义配置（Excel）
+        - generic [ref=e21]: 不上传则使用内置默认配置
+      - generic [ref=e22]: 使用内置默认配置
+      - generic [ref=e23]:
+        - button "下载示例配置" [ref=e24] [cursor=pointer]
+        - button "重置" [ref=e25] [cursor=pointer]
+  - generic [ref=e30]:
+    - generic [ref=e32]: 解析结果
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - generic [ref=e35]: "1"
+        - generic [ref=e36]: 文件数
+      - generic [ref=e37]:
+        - generic [ref=e38]: "53"
+        - generic [ref=e39]: 记录数
+      - generic [ref=e40]:
+        - generic [ref=e41]: "178"
+        - generic [ref=e42]: 作者数
+      - generic [ref=e43]:
+        - generic [ref=e44]: "131"
+        - generic [ref=e45]: 姓名匹配
+      - generic [ref=e46]:
+        - generic [ref=e47]: "131"
+        - generic [ref=e48]: 部门匹配
+    - generic [ref=e49]: 解析完成！去重后 178 条记录，姓名匹配 131 条，部门匹配 131 条
+    - button "下载Excel文件" [active] [ref=e51] [cursor=pointer]
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - generic [ref=e54]: 第 1-25 条，共 178 条
+        - generic [ref=e55]:
+          - text: "每页显示:"
+          - combobox [ref=e56]:
+            - option "25条" [selected]
+            - option "50条"
+            - option "100条"
+        - generic [ref=e57]:
+          - button "上一页" [disabled] [ref=e58]
+          - generic [ref=e59]:
+            - strong [ref=e60]: "1"
+            - link "2" [ref=e61] [cursor=pointer]:
+              - /url: "#"
+            - link "3" [ref=e62] [cursor=pointer]:
+              - /url: "#"
+            - link "4" [ref=e63] [cursor=pointer]:
+              - /url: "#"
+            - link "5" [ref=e64] [cursor=pointer]:
+              - /url: "#"
+            - text: ... 8
+          - button "下一页" [ref=e65] [cursor=pointer]
+      - table [ref=e67]:
+        - rowgroup [ref=e68]:
+          - row "UT Author Institute Index 机构 姓名 部门" [ref=e69]:
+            - columnheader "UT" [ref=e70]:
+              - text: UT
+              - textbox "过滤..." [ref=e71]
+            - columnheader "Author" [ref=e72]:
+              - text: Author
+              - textbox "过滤..." [ref=e73]
+            - columnheader "Institute" [ref=e74]:
+              - text: Institute
+              - textbox "过滤..." [ref=e75]
+            - columnheader "Index" [ref=e76]:
+              - text: Index
+              - textbox "过滤..." [ref=e77]
+            - columnheader "机构" [ref=e78]:
+              - text: 机构
+              - textbox "过滤..." [ref=e79]
+            - columnheader "姓名" [ref=e80]:
+              - text: 姓名
+              - textbox "过滤..." [ref=e81]
+            - columnheader "部门" [ref=e82]:
+              - text: 部门
+              - textbox "过滤..." [ref=e83]
+        - rowgroup [ref=e84]:
+          - row "WOS:001710458900011 Tang, Chao Jinling Inst Technol, Sch Animat, Nanjing, Jiangsu... 1 金科院 唐朝 动漫学院" [ref=e85]:
+            - cell "WOS:001710458900011" [ref=e86]
+            - cell "Tang, Chao" [ref=e87]
+            - cell "Jinling Inst Technol, Sch Animat, Nanjing, Jiangsu..." [ref=e88]
+            - cell "1" [ref=e89]
+            - cell "金科院" [ref=e90]
+            - cell "唐朝" [ref=e91]
+            - cell "动漫学院" [ref=e92]
+          - row "WOS:001531026100002 Tang, Shu Jinling Inst Technol, Fac Humanities & Social Sci,... 1 金科院 汤澍 人文学院" [ref=e93]:
+            - cell "WOS:001531026100002" [ref=e94]
+            - cell "Tang, Shu" [ref=e95]
+            - cell "Jinling Inst Technol, Fac Humanities & Social Sci,..." [ref=e96]
+            - cell "1" [ref=e97]
+            - cell "金科院" [ref=e98]
+            - cell "汤澍" [ref=e99]
+            - cell "人文学院" [ref=e100]
+          - row "WOS:001531026100002 Li, Qingpu Jinling Inst Technol, Fac Humanities & Social Sci,... 2 金科院" [ref=e101]:
+            - cell "WOS:001531026100002" [ref=e102]
+            - cell "Li, Qingpu" [ref=e103]
+            - cell "Jinling Inst Technol, Fac Humanities & Social Sci,..." [ref=e104]
+            - cell "2" [ref=e105]
+            - cell "金科院" [ref=e106]
+            - cell [ref=e107]
+            - cell [ref=e108]
+          - row "WOS:001531026100002 Xu, Zilin Jinling Inst Technol, Fac Humanities & Social Sci,... 3 金科院 徐子琳 人文学院" [ref=e109]:
+            - cell "WOS:001531026100002" [ref=e110]
+            - cell "Xu, Zilin" [ref=e111]
+            - cell "Jinling Inst Technol, Fac Humanities & Social Sci,..." [ref=e112]
+            - cell "3" [ref=e113]
+            - cell "金科院" [ref=e114]
+            - cell "徐子琳" [ref=e115]
+            - cell "人文学院" [ref=e116]
+          - row "WOS:001531026100002 Feng, Nianhua Jinling Inst Technol, Fac Humanities & Social Sci,... 4 金科院 冯年华 建工学院" [ref=e117]:
+            - cell "WOS:001531026100002" [ref=e118]
+            - cell "Feng, Nianhua" [ref=e119]
+            - cell "Jinling Inst Technol, Fac Humanities & Social Sci,..." [ref=e120]
+            - cell "4" [ref=e121]
+            - cell "金科院" [ref=e122]
+            - cell "冯年华" [ref=e123]
+            - cell "建工学院" [ref=e124]
+          - row "WOS:001132823000001 Zhou, Ziheng Jinling Inst Technol, Coll Intelligent Sci & Contr... 1 金科院 周子恒 智控学院" [ref=e125]:
+            - cell "WOS:001132823000001" [ref=e126]
+            - cell "Zhou, Ziheng" [ref=e127]
+            - cell "Jinling Inst Technol, Coll Intelligent Sci & Contr..." [ref=e128]
+            - cell "1" [ref=e129]
+            - cell "金科院" [ref=e130]
+            - cell "周子恒" [ref=e131]
+            - cell "智控学院" [ref=e132]
+          - row "WOS:001132823000001 Zhang, Chaolong Jinling Inst Technol, Coll Intelligent Sci & Contr... 2 金科院 张朝龙 智控学院" [ref=e133]:
+            - cell "WOS:001132823000001" [ref=e134]
+            - cell "Zhang, Chaolong" [ref=e135]
+            - cell "Jinling Inst Technol, Coll Intelligent Sci & Contr..." [ref=e136]
+            - cell "2" [ref=e137]
+            - cell "金科院" [ref=e138]
+            - cell "张朝龙" [ref=e139]
+            - cell "智控学院" [ref=e140]
+          - row "WOS:001064822400001 Chen, Hui Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 1 金科院 陈晖 人事处" [ref=e141]:
+            - cell "WOS:001064822400001" [ref=e142]
+            - cell "Chen, Hui" [ref=e143]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e144]
+            - cell "1" [ref=e145]
+            - cell "金科院" [ref=e146]
+            - cell "陈晖" [ref=e147]
+            - cell "人事处" [ref=e148]
+          - row "WOS:001064822400001 Guo, Yunhao Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 2 金科院" [ref=e149]:
+            - cell "WOS:001064822400001" [ref=e150]
+            - cell "Guo, Yunhao" [ref=e151]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e152]
+            - cell "2" [ref=e153]
+            - cell "金科院" [ref=e154]
+            - cell [ref=e155]
+            - cell [ref=e156]
+          - row "WOS:001064822400001 Chen, Xiu Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 3 金科院" [ref=e157]:
+            - cell "WOS:001064822400001" [ref=e158]
+            - cell "Chen, Xiu" [ref=e159]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e160]
+            - cell "3" [ref=e161]
+            - cell "金科院" [ref=e162]
+            - cell [ref=e163]
+            - cell [ref=e164]
+          - row "WOS:001064822400001 Liu, Teng Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 4 金科院" [ref=e165]:
+            - cell "WOS:001064822400001" [ref=e166]
+            - cell "Liu, Teng" [ref=e167]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e168]
+            - cell "4" [ref=e169]
+            - cell "金科院" [ref=e170]
+            - cell [ref=e171]
+            - cell [ref=e172]
+          - row "WOS:001064822400001 Zhang, Yuheng Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 5 金科院" [ref=e173]:
+            - cell "WOS:001064822400001" [ref=e174]
+            - cell "Zhang, Yuheng" [ref=e175]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e176]
+            - cell "5" [ref=e177]
+            - cell "金科院" [ref=e178]
+            - cell [ref=e179]
+            - cell [ref=e180]
+          - row "WOS:001064822400001 Chen, Wenjun Jinling Inst Technol, Sch Software Engn, Nanjing 2... 6 金科院 陈文君 软件学院、软件研究院" [ref=e181]:
+            - cell "WOS:001064822400001" [ref=e182]
+            - cell "Chen, Wenjun" [ref=e183]
+            - cell "Jinling Inst Technol, Sch Software Engn, Nanjing 2..." [ref=e184]
+            - cell "6" [ref=e185]
+            - cell "金科院" [ref=e186]
+            - cell "陈文君" [ref=e187]
+            - cell "软件学院、软件研究院" [ref=e188]
+          - row "WOS:001064822400001 Feng, Meiqin Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 7 金科院 冯美琴 动科学院" [ref=e189]:
+            - cell "WOS:001064822400001" [ref=e190]
+            - cell "Feng, Meiqin" [ref=e191]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e192]
+            - cell "7" [ref=e193]
+            - cell "金科院" [ref=e194]
+            - cell "冯美琴" [ref=e195]
+            - cell "动科学院" [ref=e196]
+          - row "WOS:000371069000001 Ye, Yuanfeng Jinling Inst Technol, Sch Mat Engn, Nanjing 211169... 1 金科院 叶原丰 材料学院" [ref=e197]:
+            - cell "WOS:000371069000001" [ref=e198]
+            - cell "Ye, Yuanfeng" [ref=e199]
+            - cell "Jinling Inst Technol, Sch Mat Engn, Nanjing 211169..." [ref=e200]
+            - cell "1" [ref=e201]
+            - cell "金科院" [ref=e202]
+            - cell "叶原丰" [ref=e203]
+            - cell "材料学院" [ref=e204]
+          - row "WOS:000371069000001 Hu, Xiaohong Jinling Inst Technol, Sch Mat Engn, Nanjing 211169... 2 金科院 胡小红 材料学院" [ref=e205]:
+            - cell "WOS:000371069000001" [ref=e206]
+            - cell "Hu, Xiaohong" [ref=e207]
+            - cell "Jinling Inst Technol, Sch Mat Engn, Nanjing 211169..." [ref=e208]
+            - cell "2" [ref=e209]
+            - cell "金科院" [ref=e210]
+            - cell "胡小红" [ref=e211]
+            - cell "材料学院" [ref=e212]
+          - row "WOS:001464923200001 Wang, Yuanyuan Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 1 金科院 汪园园 材料学院" [ref=e213]:
+            - cell "WOS:001464923200001" [ref=e214]
+            - cell "Wang, Yuanyuan" [ref=e215]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e216]
+            - cell "1" [ref=e217]
+            - cell "金科院" [ref=e218]
+            - cell "汪园园" [ref=e219]
+            - cell "材料学院" [ref=e220]
+          - row "WOS:001464923200001 Jia, Shijun Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 2 金科院" [ref=e221]:
+            - cell "WOS:001464923200001" [ref=e222]
+            - cell "Jia, Shijun" [ref=e223]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e224]
+            - cell "2" [ref=e225]
+            - cell "金科院" [ref=e226]
+            - cell [ref=e227]
+            - cell [ref=e228]
+          - row "WOS:001464923200001 Ding, Shiqiang Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 3 金科院" [ref=e229]:
+            - cell "WOS:001464923200001" [ref=e230]
+            - cell "Ding, Shiqiang" [ref=e231]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e232]
+            - cell "3" [ref=e233]
+            - cell "金科院" [ref=e234]
+            - cell [ref=e235]
+            - cell [ref=e236]
+          - row "WOS:001464923200001 Zhang, Wenyan Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 4 金科院 张文妍 教务处" [ref=e237]:
+            - cell "WOS:001464923200001" [ref=e238]
+            - cell "Zhang, Wenyan" [ref=e239]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e240]
+            - cell "4" [ref=e241]
+            - cell "金科院" [ref=e242]
+            - cell "张文妍" [ref=e243]
+            - cell "教务处" [ref=e244]
+          - row "WOS:001464923200001 Shu, Rui Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 5 金科院" [ref=e245]:
+            - cell "WOS:001464923200001" [ref=e246]
+            - cell "Shu, Rui" [ref=e247]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e248]
+            - cell "5" [ref=e249]
+            - cell "金科院" [ref=e250]
+            - cell [ref=e251]
+            - cell [ref=e252]
+          - row "WOS:001464923200001 Hu, Yingfei Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 6 金科院 胡颖飞 材料学院" [ref=e253]:
+            - cell "WOS:001464923200001" [ref=e254]
+            - cell "Hu, Yingfei" [ref=e255]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e256]
+            - cell "6" [ref=e257]
+            - cell "金科院" [ref=e258]
+            - cell "胡颖飞" [ref=e259]
+            - cell "材料学院" [ref=e260]
+          - row "WOS:001543191300004 Niu, Ruikun Jinling Inst Technol, Nanjing 211169, Peoples R Ch... 1 金科院 牛瑞坤 机电学院" [ref=e261]:
+            - cell "WOS:001543191300004" [ref=e262]
+            - cell "Niu, Ruikun" [ref=e263]
+            - cell "Jinling Inst Technol, Nanjing 211169, Peoples R Ch..." [ref=e264]
+            - cell "1" [ref=e265]
+            - cell "金科院" [ref=e266]
+            - cell "牛瑞坤" [ref=e267]
+            - cell "机电学院" [ref=e268]
+          - row "WOS:001543191300004 Meng, Yanni Jinling Inst Technol, Nanjing 211169, Peoples R Ch... 2 金科院 孟妍妮 机电学院" [ref=e269]:
+            - cell "WOS:001543191300004" [ref=e270]
+            - cell "Meng, Yanni" [ref=e271]
+            - cell "Jinling Inst Technol, Nanjing 211169, Peoples R Ch..." [ref=e272]
+            - cell "2" [ref=e273]
+            - cell "金科院" [ref=e274]
+            - cell "孟妍妮" [ref=e275]
+            - cell "机电学院" [ref=e276]
+          - row "WOS:001543191300004 Wang, Haiqiao Jinling Inst Technol, Nanjing 211169, Peoples R Ch... 3 金科院 王海巧 机电学院" [ref=e277]:
+            - cell "WOS:001543191300004" [ref=e278]
+            - cell "Wang, Haiqiao" [ref=e279]
+            - cell "Jinling Inst Technol, Nanjing 211169, Peoples R Ch..." [ref=e280]
+            - cell "3" [ref=e281]
+            - cell "金科院" [ref=e282]
+            - cell "王海巧" [ref=e283]
+            - cell "机电学院" [ref=e284]

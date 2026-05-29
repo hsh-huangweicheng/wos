@@ -1,0 +1,23 @@
+- generic [ref=e2]:
+  - heading "WOS记录解析工具 - 增强版 帮助" [level=1] [ref=e3]:
+    - text: WOS记录解析工具 - 增强版
+    - button "帮助" [ref=e4] [cursor=pointer]
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e8]: WOS文件上传
+      - generic [ref=e9] [cursor=pointer]:
+        - generic [ref=e10]: 📄
+        - generic [ref=e11]: 点击或拖拽上传WOS导出的TXT文件
+        - generic [ref=e12]: 支持同时上传多个文件
+      - generic [ref=e13]:
+        - button "解析文件" [disabled] [ref=e14]
+        - button "清空" [disabled] [ref=e15] [cursor=pointer]
+    - generic [ref=e16]:
+      - generic [ref=e18]: 配置管理
+      - generic [ref=e19] [cursor=pointer]:
+        - generic [ref=e20]: 点击上传自定义配置（Excel）
+        - generic [ref=e21]: 不上传则使用内置默认配置
+      - generic [ref=e22]: 使用内置默认配置
+      - generic [ref=e23]:
+        - button "下载示例配置" [ref=e24] [cursor=pointer]
+        - button "重置" [ref=e25] [cursor=pointer]

@@ -1,0 +1,322 @@
+- generic [ref=e2]:
+  - heading "WOS记录解析工具 - 增强版 帮助" [level=1] [ref=e3]:
+    - text: WOS记录解析工具 - 增强版
+    - button "帮助" [ref=e4] [cursor=pointer]
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e8]: WOS文件上传
+      - generic [ref=e9] [cursor=pointer]:
+        - generic [ref=e10]: 📄
+        - generic [ref=e11]: 点击或拖拽上传WOS导出的TXT文件
+        - generic [ref=e12]: 支持同时上传多个文件
+      - generic [ref=e27]:
+        - generic [ref=e28]: 📄 savedrecs.txt
+        - generic [ref=e29] [cursor=pointer]: ✕
+      - generic [ref=e13]:
+        - button "解析文件" [ref=e14] [cursor=pointer]
+        - button "清空" [ref=e15] [cursor=pointer]
+    - generic [ref=e16]:
+      - generic [ref=e18]: 配置管理
+      - generic [ref=e19] [cursor=pointer]:
+        - generic [ref=e20]: 点击上传自定义配置（Excel）
+        - generic [ref=e21]: 不上传则使用内置默认配置
+      - generic [ref=e22]: 使用内置默认配置
+      - generic [ref=e23]:
+        - button "下载示例配置" [ref=e24] [cursor=pointer]
+        - button "重置" [ref=e25] [cursor=pointer]
+  - generic [ref=e30]:
+    - generic [ref=e32]: 解析结果
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - generic [ref=e35]: "1"
+        - generic [ref=e36]: 文件数
+      - generic [ref=e37]:
+        - generic [ref=e38]: "53"
+        - generic [ref=e39]: 记录数
+      - generic [ref=e40]:
+        - generic [ref=e41]: "178"
+        - generic [ref=e42]: 作者数
+      - generic [ref=e43]:
+        - generic [ref=e44]: "131"
+        - generic [ref=e45]: 姓名匹配
+      - generic [ref=e46]:
+        - generic [ref=e47]: "131"
+        - generic [ref=e48]: 部门匹配
+    - generic [ref=e49]: 解析完成！去重后 178 条记录，姓名匹配 131 条，部门匹配 131 条
+    - button "下载Excel文件" [active] [ref=e51] [cursor=pointer]
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - generic [ref=e54]: 第 1-25 条，共 178 条
+        - generic [ref=e55]:
+          - text: "每页显示:"
+          - combobox [ref=e56]:
+            - option "25条" [selected]
+            - option "50条"
+            - option "100条"
+        - generic [ref=e57]:
+          - button "上一页" [disabled] [ref=e58]
+          - generic [ref=e59]:
+            - strong [ref=e60]: "1"
+            - link "2" [ref=e61] [cursor=pointer]:
+              - /url: "#"
+            - link "3" [ref=e62] [cursor=pointer]:
+              - /url: "#"
+            - link "4" [ref=e63] [cursor=pointer]:
+              - /url: "#"
+            - link "5" [ref=e64] [cursor=pointer]:
+              - /url: "#"
+            - text: ... 8
+          - button "下一页" [ref=e65] [cursor=pointer]
+      - table [ref=e67]:
+        - rowgroup [ref=e68]:
+          - row "UT Title Author Institute Index 机构 姓名 部门" [ref=e69]:
+            - columnheader "UT" [ref=e70]:
+              - text: UT
+              - textbox "过滤..." [ref=e71]
+            - columnheader "Title" [ref=e72]:
+              - text: Title
+              - textbox "过滤..." [ref=e73]
+            - columnheader "Author" [ref=e74]:
+              - text: Author
+              - textbox "过滤..." [ref=e75]
+            - columnheader "Institute" [ref=e76]:
+              - text: Institute
+              - textbox "过滤..." [ref=e77]
+            - columnheader "Index" [ref=e78]:
+              - text: Index
+              - textbox "过滤..." [ref=e79]
+            - columnheader "机构" [ref=e80]:
+              - text: 机构
+              - textbox "过滤..." [ref=e81]
+            - columnheader "姓名" [ref=e82]:
+              - text: 姓名
+              - textbox "过滤..." [ref=e83]
+            - columnheader "部门" [ref=e84]:
+              - text: 部门
+              - textbox "过滤..." [ref=e85]
+        - rowgroup [ref=e86]:
+          - row "WOS:001710458900011 The autonomy paradox in AI-generated con... Tang, Chao Jinling Inst Technol, Sch Animat, Nanjing, Jiangsu... 1 金科院 唐朝 动漫学院" [ref=e87]:
+            - cell "WOS:001710458900011" [ref=e88]
+            - cell "The autonomy paradox in AI-generated con..." [ref=e89]
+            - cell "Tang, Chao" [ref=e90]
+            - cell "Jinling Inst Technol, Sch Animat, Nanjing, Jiangsu..." [ref=e91]
+            - cell "1" [ref=e92]
+            - cell "金科院" [ref=e93]
+            - cell "唐朝" [ref=e94]
+            - cell "动漫学院" [ref=e95]
+          - row "WOS:001531026100002 Assessment of Coupling Coordination of T... Tang, Shu Jinling Inst Technol, Fac Humanities & Social Sci,... 1 金科院 汤澍 人文学院" [ref=e96]:
+            - cell "WOS:001531026100002" [ref=e97]
+            - cell "Assessment of Coupling Coordination of T..." [ref=e98]
+            - cell "Tang, Shu" [ref=e99]
+            - cell "Jinling Inst Technol, Fac Humanities & Social Sci,..." [ref=e100]
+            - cell "1" [ref=e101]
+            - cell "金科院" [ref=e102]
+            - cell "汤澍" [ref=e103]
+            - cell "人文学院" [ref=e104]
+          - row "WOS:001531026100002 Assessment of Coupling Coordination of T... Li, Qingpu Jinling Inst Technol, Fac Humanities & Social Sci,... 2 金科院" [ref=e105]:
+            - cell "WOS:001531026100002" [ref=e106]
+            - cell "Assessment of Coupling Coordination of T..." [ref=e107]
+            - cell "Li, Qingpu" [ref=e108]
+            - cell "Jinling Inst Technol, Fac Humanities & Social Sci,..." [ref=e109]
+            - cell "2" [ref=e110]
+            - cell "金科院" [ref=e111]
+            - cell [ref=e112]
+            - cell [ref=e113]
+          - row "WOS:001531026100002 Assessment of Coupling Coordination of T... Xu, Zilin Jinling Inst Technol, Fac Humanities & Social Sci,... 3 金科院 徐子琳 人文学院" [ref=e114]:
+            - cell "WOS:001531026100002" [ref=e115]
+            - cell "Assessment of Coupling Coordination of T..." [ref=e116]
+            - cell "Xu, Zilin" [ref=e117]
+            - cell "Jinling Inst Technol, Fac Humanities & Social Sci,..." [ref=e118]
+            - cell "3" [ref=e119]
+            - cell "金科院" [ref=e120]
+            - cell "徐子琳" [ref=e121]
+            - cell "人文学院" [ref=e122]
+          - row "WOS:001531026100002 Assessment of Coupling Coordination of T... Feng, Nianhua Jinling Inst Technol, Fac Humanities & Social Sci,... 4 金科院 冯年华 建工学院" [ref=e123]:
+            - cell "WOS:001531026100002" [ref=e124]
+            - cell "Assessment of Coupling Coordination of T..." [ref=e125]
+            - cell "Feng, Nianhua" [ref=e126]
+            - cell "Jinling Inst Technol, Fac Humanities & Social Sci,..." [ref=e127]
+            - cell "4" [ref=e128]
+            - cell "金科院" [ref=e129]
+            - cell "冯年华" [ref=e130]
+            - cell "建工学院" [ref=e131]
+          - row "WOS:001132823000001 An Extended Kalman Filter Design for Sta... Zhou, Ziheng Jinling Inst Technol, Coll Intelligent Sci & Contr... 1 金科院 周子恒 智控学院" [ref=e132]:
+            - cell "WOS:001132823000001" [ref=e133]
+            - cell "An Extended Kalman Filter Design for Sta..." [ref=e134]
+            - cell "Zhou, Ziheng" [ref=e135]
+            - cell "Jinling Inst Technol, Coll Intelligent Sci & Contr..." [ref=e136]
+            - cell "1" [ref=e137]
+            - cell "金科院" [ref=e138]
+            - cell "周子恒" [ref=e139]
+            - cell "智控学院" [ref=e140]
+          - row "WOS:001132823000001 An Extended Kalman Filter Design for Sta... Zhang, Chaolong Jinling Inst Technol, Coll Intelligent Sci & Contr... 2 金科院 张朝龙 智控学院" [ref=e141]:
+            - cell "WOS:001132823000001" [ref=e142]
+            - cell "An Extended Kalman Filter Design for Sta..." [ref=e143]
+            - cell "Zhang, Chaolong" [ref=e144]
+            - cell "Jinling Inst Technol, Coll Intelligent Sci & Contr..." [ref=e145]
+            - cell "2" [ref=e146]
+            - cell "金科院" [ref=e147]
+            - cell "张朝龙" [ref=e148]
+            - cell "智控学院" [ref=e149]
+          - row "WOS:001064822400001 Fluorescence Lifetime of Chlorophyll a i... Chen, Hui Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 1 金科院 陈晖 人事处" [ref=e150]:
+            - cell "WOS:001064822400001" [ref=e151]
+            - cell "Fluorescence Lifetime of Chlorophyll a i..." [ref=e152]
+            - cell "Chen, Hui" [ref=e153]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e154]
+            - cell "1" [ref=e155]
+            - cell "金科院" [ref=e156]
+            - cell "陈晖" [ref=e157]
+            - cell "人事处" [ref=e158]
+          - row "WOS:001064822400001 Fluorescence Lifetime of Chlorophyll a i... Guo, Yunhao Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 2 金科院" [ref=e159]:
+            - cell "WOS:001064822400001" [ref=e160]
+            - cell "Fluorescence Lifetime of Chlorophyll a i..." [ref=e161]
+            - cell "Guo, Yunhao" [ref=e162]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e163]
+            - cell "2" [ref=e164]
+            - cell "金科院" [ref=e165]
+            - cell [ref=e166]
+            - cell [ref=e167]
+          - row "WOS:001064822400001 Fluorescence Lifetime of Chlorophyll a i... Chen, Xiu Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 3 金科院" [ref=e168]:
+            - cell "WOS:001064822400001" [ref=e169]
+            - cell "Fluorescence Lifetime of Chlorophyll a i..." [ref=e170]
+            - cell "Chen, Xiu" [ref=e171]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e172]
+            - cell "3" [ref=e173]
+            - cell "金科院" [ref=e174]
+            - cell [ref=e175]
+            - cell [ref=e176]
+          - row "WOS:001064822400001 Fluorescence Lifetime of Chlorophyll a i... Liu, Teng Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 4 金科院" [ref=e177]:
+            - cell "WOS:001064822400001" [ref=e178]
+            - cell "Fluorescence Lifetime of Chlorophyll a i..." [ref=e179]
+            - cell "Liu, Teng" [ref=e180]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e181]
+            - cell "4" [ref=e182]
+            - cell "金科院" [ref=e183]
+            - cell [ref=e184]
+            - cell [ref=e185]
+          - row "WOS:001064822400001 Fluorescence Lifetime of Chlorophyll a i... Zhang, Yuheng Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 5 金科院" [ref=e186]:
+            - cell "WOS:001064822400001" [ref=e187]
+            - cell "Fluorescence Lifetime of Chlorophyll a i..." [ref=e188]
+            - cell "Zhang, Yuheng" [ref=e189]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e190]
+            - cell "5" [ref=e191]
+            - cell "金科院" [ref=e192]
+            - cell [ref=e193]
+            - cell [ref=e194]
+          - row "WOS:001064822400001 Fluorescence Lifetime of Chlorophyll a i... Chen, Wenjun Jinling Inst Technol, Sch Software Engn, Nanjing 2... 6 金科院 陈文君 软件学院、软件研究院" [ref=e195]:
+            - cell "WOS:001064822400001" [ref=e196]
+            - cell "Fluorescence Lifetime of Chlorophyll a i..." [ref=e197]
+            - cell "Chen, Wenjun" [ref=e198]
+            - cell "Jinling Inst Technol, Sch Software Engn, Nanjing 2..." [ref=e199]
+            - cell "6" [ref=e200]
+            - cell "金科院" [ref=e201]
+            - cell "陈文君" [ref=e202]
+            - cell "软件学院、软件研究院" [ref=e203]
+          - row "WOS:001064822400001 Fluorescence Lifetime of Chlorophyll a i... Feng, Meiqin Jinling Inst Technol, Sch Anim Sci & Food Engn, Na... 7 金科院 冯美琴 动科学院" [ref=e204]:
+            - cell "WOS:001064822400001" [ref=e205]
+            - cell "Fluorescence Lifetime of Chlorophyll a i..." [ref=e206]
+            - cell "Feng, Meiqin" [ref=e207]
+            - cell "Jinling Inst Technol, Sch Anim Sci & Food Engn, Na..." [ref=e208]
+            - cell "7" [ref=e209]
+            - cell "金科院" [ref=e210]
+            - cell "冯美琴" [ref=e211]
+            - cell "动科学院" [ref=e212]
+          - row "WOS:000371069000001 A pH-Sensitive Injectable Nanoparticle C... Ye, Yuanfeng Jinling Inst Technol, Sch Mat Engn, Nanjing 211169... 1 金科院 叶原丰 材料学院" [ref=e213]:
+            - cell "WOS:000371069000001" [ref=e214]
+            - cell "A pH-Sensitive Injectable Nanoparticle C..." [ref=e215]
+            - cell "Ye, Yuanfeng" [ref=e216]
+            - cell "Jinling Inst Technol, Sch Mat Engn, Nanjing 211169..." [ref=e217]
+            - cell "1" [ref=e218]
+            - cell "金科院" [ref=e219]
+            - cell "叶原丰" [ref=e220]
+            - cell "材料学院" [ref=e221]
+          - row "WOS:000371069000001 A pH-Sensitive Injectable Nanoparticle C... Hu, Xiaohong Jinling Inst Technol, Sch Mat Engn, Nanjing 211169... 2 金科院 胡小红 材料学院" [ref=e222]:
+            - cell "WOS:000371069000001" [ref=e223]
+            - cell "A pH-Sensitive Injectable Nanoparticle C..." [ref=e224]
+            - cell "Hu, Xiaohong" [ref=e225]
+            - cell "Jinling Inst Technol, Sch Mat Engn, Nanjing 211169..." [ref=e226]
+            - cell "2" [ref=e227]
+            - cell "金科院" [ref=e228]
+            - cell "胡小红" [ref=e229]
+            - cell "材料学院" [ref=e230]
+          - row "WOS:001464923200001 Development of Palygorskite-CaIn2S4 comp... Wang, Yuanyuan Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 1 金科院 汪园园 材料学院" [ref=e231]:
+            - cell "WOS:001464923200001" [ref=e232]
+            - cell "Development of Palygorskite-CaIn2S4 comp..." [ref=e233]
+            - cell "Wang, Yuanyuan" [ref=e234]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e235]
+            - cell "1" [ref=e236]
+            - cell "金科院" [ref=e237]
+            - cell "汪园园" [ref=e238]
+            - cell "材料学院" [ref=e239]
+          - row "WOS:001464923200001 Development of Palygorskite-CaIn2S4 comp... Jia, Shijun Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 2 金科院" [ref=e240]:
+            - cell "WOS:001464923200001" [ref=e241]
+            - cell "Development of Palygorskite-CaIn2S4 comp..." [ref=e242]
+            - cell "Jia, Shijun" [ref=e243]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e244]
+            - cell "2" [ref=e245]
+            - cell "金科院" [ref=e246]
+            - cell [ref=e247]
+            - cell [ref=e248]
+          - row "WOS:001464923200001 Development of Palygorskite-CaIn2S4 comp... Ding, Shiqiang Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 3 金科院" [ref=e249]:
+            - cell "WOS:001464923200001" [ref=e250]
+            - cell "Development of Palygorskite-CaIn2S4 comp..." [ref=e251]
+            - cell "Ding, Shiqiang" [ref=e252]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e253]
+            - cell "3" [ref=e254]
+            - cell "金科院" [ref=e255]
+            - cell [ref=e256]
+            - cell [ref=e257]
+          - row "WOS:001464923200001 Development of Palygorskite-CaIn2S4 comp... Zhang, Wenyan Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 4 金科院 张文妍 教务处" [ref=e258]:
+            - cell "WOS:001464923200001" [ref=e259]
+            - cell "Development of Palygorskite-CaIn2S4 comp..." [ref=e260]
+            - cell "Zhang, Wenyan" [ref=e261]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e262]
+            - cell "4" [ref=e263]
+            - cell "金科院" [ref=e264]
+            - cell "张文妍" [ref=e265]
+            - cell "教务处" [ref=e266]
+          - row "WOS:001464923200001 Development of Palygorskite-CaIn2S4 comp... Shu, Rui Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 5 金科院" [ref=e267]:
+            - cell "WOS:001464923200001" [ref=e268]
+            - cell "Development of Palygorskite-CaIn2S4 comp..." [ref=e269]
+            - cell "Shu, Rui" [ref=e270]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e271]
+            - cell "5" [ref=e272]
+            - cell "金科院" [ref=e273]
+            - cell [ref=e274]
+            - cell [ref=e275]
+          - row "WOS:001464923200001 Development of Palygorskite-CaIn2S4 comp... Hu, Yingfei Jinling Inst Technol, Coll Mat Engn, Nanjing 21116... 6 金科院 胡颖飞 材料学院" [ref=e276]:
+            - cell "WOS:001464923200001" [ref=e277]
+            - cell "Development of Palygorskite-CaIn2S4 comp..." [ref=e278]
+            - cell "Hu, Yingfei" [ref=e279]
+            - cell "Jinling Inst Technol, Coll Mat Engn, Nanjing 21116..." [ref=e280]
+            - cell "6" [ref=e281]
+            - cell "金科院" [ref=e282]
+            - cell "胡颖飞" [ref=e283]
+            - cell "材料学院" [ref=e284]
+          - row "WOS:001543191300004 PREPARATION PROCESS, STRUCTURE, AND MODI... Niu, Ruikun Jinling Inst Technol, Nanjing 211169, Peoples R Ch... 1 金科院 牛瑞坤 机电学院" [ref=e285]:
+            - cell "WOS:001543191300004" [ref=e286]
+            - cell "PREPARATION PROCESS, STRUCTURE, AND MODI..." [ref=e287]
+            - cell "Niu, Ruikun" [ref=e288]
+            - cell "Jinling Inst Technol, Nanjing 211169, Peoples R Ch..." [ref=e289]
+            - cell "1" [ref=e290]
+            - cell "金科院" [ref=e291]
+            - cell "牛瑞坤" [ref=e292]
+            - cell "机电学院" [ref=e293]
+          - row "WOS:001543191300004 PREPARATION PROCESS, STRUCTURE, AND MODI... Meng, Yanni Jinling Inst Technol, Nanjing 211169, Peoples R Ch... 2 金科院 孟妍妮 机电学院" [ref=e294]:
+            - cell "WOS:001543191300004" [ref=e295]
+            - cell "PREPARATION PROCESS, STRUCTURE, AND MODI..." [ref=e296]
+            - cell "Meng, Yanni" [ref=e297]
+            - cell "Jinling Inst Technol, Nanjing 211169, Peoples R Ch..." [ref=e298]
+            - cell "2" [ref=e299]
+            - cell "金科院" [ref=e300]
+            - cell "孟妍妮" [ref=e301]
+            - cell "机电学院" [ref=e302]
+          - row "WOS:001543191300004 PREPARATION PROCESS, STRUCTURE, AND MODI... Wang, Haiqiao Jinling Inst Technol, Nanjing 211169, Peoples R Ch... 3 金科院 王海巧 机电学院" [ref=e303]:
+            - cell "WOS:001543191300004" [ref=e304]
+            - cell "PREPARATION PROCESS, STRUCTURE, AND MODI..." [ref=e305]
+            - cell "Wang, Haiqiao" [ref=e306]
+            - cell "Jinling Inst Technol, Nanjing 211169, Peoples R Ch..." [ref=e307]
+            - cell "3" [ref=e308]
+            - cell "金科院" [ref=e309]
+            - cell "王海巧" [ref=e310]
+            - cell "机电学院" [ref=e311]

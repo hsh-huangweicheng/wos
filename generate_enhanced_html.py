@@ -1,8 +1,20 @@
 import base64
+import os
 
-# Read the base64 config
-with open('config_base64.txt', 'r', encoding='utf-8') as f:
-    config_base64 = f.read().strip()
+# Prefer reading the Excel config file `配置.xlsx` and convert it to base64.
+# If it's not available, fall back to reading `config_base64.txt` as a last resort.
+if os.path.exists('配置.xlsx'):
+    with open('配置.xlsx', 'rb') as f:
+        config_bytes = f.read()
+    config_base64 = base64.b64encode(config_bytes).decode('ascii')
+else:
+    # Fallback: try to read previously generated base64 file (not recommended)
+    if os.path.exists('config_base64.txt'):
+        with open('config_base64.txt', 'r', encoding='utf-8') as f:
+            config_base64 = f.read().strip()
+        print('Warning: 配置.xlsx not found, using config_base64.txt as fallback.')
+    else:
+        raise FileNotFoundError('配置.xlsx not found and no config_base64.txt fallback available.')
 
 html_content = '''<!DOCTYPE html>
 <html lang="zh-CN">
@@ -10,7 +22,7 @@ html_content = '''<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WOS记录解析工具 - 增强版</title>
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -120,7 +132,7 @@ html_content = '''<!DOCTYPE html>
                 </div>
                 <div class="config-status default" id="configStatus">使用内置默认配置</div>
                 <div class="btn-group">
-                    <button class="btn btn-secondary" id="downloadConfigBtn">下载示例配置</button>
+                    <button class="btn btn-secondary" id="downloadConfigBtn">下载默认配置</button>
                     <button class="btn btn-secondary" id="resetConfigBtn">重置</button>
                 </div>
             </div>
@@ -157,6 +169,7 @@ html_content = '''<!DOCTYPE html>
                     <table class="preview-table" id="previewTable">
                         <thead><tr>
                             <th>UT <input type="text" placeholder="过滤..." data-filter="UT"></th>
+                            <th>Title <input type="text" placeholder="过滤..." data-filter="Title"></th>
                             <th>Author <input type="text" placeholder="过滤..." data-filter="Author"></th>
                             <th>Institute <input type="text" placeholder="过滤..." data-filter="Institute"></th>
                             <th>Index <input type="text" placeholder="过滤..." data-filter="Index"></th>
@@ -266,8 +279,29 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModalListeners();
 });
 
-// Load default config from base64
+// Load default config from base64 (or localStorage if available)
 function loadDefaultConfig() {
+    // 先检查localStorage是否有用户上传的配置
+    const savedConfig = localStorage.getItem('wos_custom_config');
+    const savedConfigName = localStorage.getItem('wos_custom_config_name');
+
+    if (savedConfig) {
+        try {
+            const binary = atob(savedConfig);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            const workbook = XLSX.read(bytes, { type: 'array' });
+            appConfig = parseConfigWorkbook(workbook);
+            configStatus.className = 'config-status loaded';
+            configStatus.textContent = `✓ 已加载自定义配置: ${savedConfigName || '未知'}`;
+            updateDownloadConfigBtn();
+            return;
+        } catch (e) {
+            console.error('Failed to load saved config from localStorage:', e);
+            // 继续加载默认配置
+        }
+    }
+
     try {
         const binary = atob(DEFAULT_CONFIG_BASE64);
         const bytes = new Uint8Array(binary.length);
@@ -276,6 +310,7 @@ function loadDefaultConfig() {
         appConfig = parseConfigWorkbook(workbook);
         configStatus.className = 'config-status default';
         configStatus.textContent = '使用内置默认配置';
+        updateDownloadConfigBtn();
     } catch (e) {
         console.error('Failed to load default config:', e);
         appConfig = { institutions: [], authors: [], departments: [], knownInfo: [] };
@@ -394,10 +429,18 @@ function handleConfigFile(file) {
     const reader = new FileReader();
     reader.onload = (e) => {
         try {
-            const workbook = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+            const arrayBuffer = e.target.result;
+            const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: 'array' });
             appConfig = parseConfigWorkbook(workbook);
+
+            // 保存到localStorage
+            const base64 = btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)));
+            localStorage.setItem('wos_custom_config', base64);
+            localStorage.setItem('wos_custom_config_name', file.name);
+
             configStatus.className = 'config-status loaded';
-            configStatus.textContent = `✓ 已加载自定义配置`;
+            configStatus.textContent = `✓ 已加载自定义配置: ${file.name}`;
+            updateDownloadConfigBtn();
         } catch (e) {
             alert('配置文件解析失败: ' + e.message);
         }
@@ -405,22 +448,59 @@ function handleConfigFile(file) {
     reader.readAsArrayBuffer(file);
 }
 
-// Download config template
+// 更新下载配置按钮状态
+function updateDownloadConfigBtn() {
+    const customConfig = localStorage.getItem('wos_custom_config');
+    const downloadBtn = document.getElementById('downloadConfigBtn');
+    if (customConfig) {
+        downloadBtn.textContent = '下载当前配置';
+    } else {
+        downloadBtn.textContent = '下载默认配置';
+    }
+}
+
+// Download config (custom or template)
 downloadConfigBtn.addEventListener('click', () => {
-    const wb = XLSX.utils.book_new();
-    const instData = [['英文', '中文'], ['Jinling Inst', '金科院']];
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(instData), '机构英中');
-    const authData = [['英文', '中文'], ['Zhao, Di', '赵迪'], ['Tong, Lili', '童丽丽']];
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(authData), '作者英中');
-    const deptData = [['姓名', '部门'], ['刘志远', '校领导'], ['张三', '人事处']];
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(deptData), '作者部门');
-    const knownData = [['UT', '姓名', '部门'], ['WOS:001064822400001', '陈晖', '人事处']];
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(knownData), '已知信息');
-    XLSX.writeFile(wb, 'WOS配置模板.xlsx');
+    const customConfig = localStorage.getItem('wos_custom_config');
+    const customConfigName = localStorage.getItem('wos_custom_config_name') || '自定义配置.xlsx';
+
+    if (customConfig) {
+        // 下载用户上传的配置
+        const binary = atob(customConfig);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = customConfigName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    } else {
+        // 下载内置默认配置
+        const binary = atob(DEFAULT_CONFIG_BASE64);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        const blob = new Blob([bytes], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'WOS默认配置.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
 });
 
 // Reset config
-resetConfigBtn.addEventListener('click', loadDefaultConfig);
+resetConfigBtn.addEventListener('click', () => {
+    localStorage.removeItem('wos_custom_config');
+    localStorage.removeItem('wos_custom_config_name');
+    loadDefaultConfig();
+});
 
 // Setup modal listeners
 function setupModalListeners() {
@@ -502,8 +582,11 @@ function renderTable() {
     previewBody.innerHTML = pageData.map(item => {
         const nameHighlight = item['姓名'] && item['姓名'].includes(';') ? 'highlight' : '';
         const deptHighlight = item['部门'] && item['部门'].includes(';') ? 'highlight' : '';
+        const titleText = item.Title || '';
+        const titleDisplay = titleText.length > 40 ? titleText.substring(0, 40) + '...' : titleText;
         return `<tr>
             <td>${escapeHtml(item.UT)}</td>
+            <td title="${escapeHtml(titleText)}">${escapeHtml(titleDisplay)}</td>
             <td>${escapeHtml(item.Author)}</td>
             <td title="${escapeHtml(item.Institute)}">${escapeHtml(item.Institute ? (item.Institute.length > 50 ? item.Institute.substring(0, 50) + '...' : item.Institute) : '')}</td>
             <td>${item.Index}</td>
@@ -738,6 +821,7 @@ function parseWOSText(text) {
  */
 function processRecord(record, results) {
     const ut = record['UT'];
+    const title = record['TI'] || '';  // 提取TI字段（论文标题）
     // AF字段包含作者全名列表，决定作者顺序
     const afList = (record['AF'] || '').split('\\n').map(a => a.trim()).filter(a => a);
     // C1字段包含作者-机构对应关系
@@ -764,6 +848,7 @@ function processRecord(record, results) {
 
         results.push({
             UT: ut,
+            Title: title,
             Author: author,
             Institute: institution,
             Index: authorOrder,
@@ -923,25 +1008,89 @@ function escapeHtml(text) {
 downloadBtn.addEventListener('click', () => {
     if (parsedData.length === 0) return;
 
-    const headers = ['UT', 'Author', 'Institute', 'Index', '机构', '姓名', '部门'];
-    const data = [headers];
+    const headers = ['UT', 'Title', 'Author', 'Institute', 'Index', '机构', '姓名', '部门'];
 
+    // ========== Sheet1: 作者明细 ==========
+    const sheet1Data = [headers];
     for (const item of parsedData) {
-        data.push([
-            item.UT, item.Author, item.Institute, item.Index,
+        sheet1Data.push([
+            item.UT, item.Title || '', item.Author, item.Institute, item.Index,
             item['机构'], item['姓名'], item['部门']
         ]);
     }
 
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.aoa_to_sheet(data);
+    // ========== Sheet2: UT汇总 ==========
+    // 按UT分组
+    const utGroups = {};
+    for (const item of parsedData) {
+        if (!utGroups[item.UT]) {
+            utGroups[item.UT] = [];
+        }
+        utGroups[item.UT].push(item);
+    }
 
-    ws['!cols'] = [
-        { wch: 25 }, { wch: 20 }, { wch: 60 }, { wch: 6 },
+    // 对每个UT组进行处理
+    const sheet2Data = [headers];
+    for (const ut of Object.keys(utGroups)) {
+        const group = utGroups[ut];
+        // 按Index升序排序
+        group.sort((a, b) => a.Index - b.Index);
+
+        // Title取第一条记录的标题
+        const title = group[0].Title || '';
+        // 合并各字段（去重后用"; "连接）
+        const authors = [...new Set(group.map(item => item.Author))].join('; ');
+        const institutes = [...new Set(group.map(item => item.Institute).filter(v => v))].join('; ');
+        const indices = [...new Set(group.map(item => String(item.Index)))].join('; ');
+        // 机构字段：先拆分分号，再去重
+        const allInstChinese = group.flatMap(item => (item['机构'] || '').split(/[;；]/).map(s => s.trim()).filter(v => v));
+        const instChinese = [...new Set(allInstChinese)].join('; ');
+        // 姓名字段：先拆分分号，再去重
+        const allNames = group.flatMap(item => (item['姓名'] || '').split(/[;；]/).map(s => s.trim()).filter(v => v));
+        const names = [...new Set(allNames)].join('; ');
+        // 部门字段：先拆分分号，再去重
+        const allDepts = group.flatMap(item => (item['部门'] || '').split(/[;；]/).map(s => s.trim()).filter(v => v));
+        const depts = [...new Set(allDepts)].join('; ');
+
+        sheet2Data.push([ut, title, authors, institutes, indices, instChinese, names, depts]);
+    }
+
+    // ========== 创建工作簿 ==========
+    const wb = XLSX.utils.book_new();
+
+    // Sheet1
+    const ws1 = XLSX.utils.aoa_to_sheet(sheet1Data);
+    ws1['!cols'] = [
+        { wch: 25 }, { wch: 50 }, { wch: 20 }, { wch: 60 }, { wch: 6 },
         { wch: 10 }, { wch: 15 }, { wch: 20 }
     ];
 
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    // 为姓名和部门列添加红色背景（如果包含分号）
+    // 姓名列是第7列(G)，部门列是第8列(H)
+    const range = XLSX.utils.decode_range(ws1['!ref']);
+    for (let row = range.s.r + 1; row <= range.e.r; row++) {
+        // 姓名列 (G列，索引6)
+        const nameCell = ws1[XLSX.utils.encode_cell({ r: row, c: 6 })];
+        if (nameCell && nameCell.v && String(nameCell.v).includes(';')) {
+            nameCell.s = { fill: { fgColor: { rgb: 'FFCCCC' } } };
+        }
+        // 部门列 (H列，索引7)
+        const deptCell = ws1[XLSX.utils.encode_cell({ r: row, c: 7 })];
+        if (deptCell && deptCell.v && String(deptCell.v).includes(';')) {
+            deptCell.s = { fill: { fgColor: { rgb: 'FFCCCC' } } };
+        }
+    }
+
+    XLSX.utils.book_append_sheet(wb, ws1, '展开');
+
+    // Sheet2
+    const ws2 = XLSX.utils.aoa_to_sheet(sheet2Data);
+    ws2['!cols'] = [
+        { wch: 25 }, { wch: 50 }, { wch: 40 }, { wch: 80 }, { wch: 15 },
+        { wch: 15 }, { wch: 30 }, { wch: 30 }
+    ];
+
+    XLSX.utils.book_append_sheet(wb, ws2, '合并');
 
     const recordCount = new Set(parsedData.map(d => d.UT)).size;
     const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
